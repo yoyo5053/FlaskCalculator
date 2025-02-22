@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulačka</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .kalkulacka {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .vysledek {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="kalkulacka">
+        <h1>Kalkulačka</h1>
+        <form method="POST">
+            <label for="cislo1">Číslo 1:</label>
+            <input type="number" name="cislo1" id="cislo1" required><br><br>
+
+            <label for="cislo2">Číslo 2:</label>
+            <input type="number" name="cislo2" id="cislo2" required><br><br>
+
+            <label for="operace">Operace:</label>
+            <select name="operace" id="operace">
+                <option value="soucet">Součet</option>
+                <option value="rozdil">Rozdíl</option>
+                <option value="soucin">Součin</option>
+                <option value="podil">Podíl</option>
+            </select><br><br>
+
+            <input type="submit" value="Spočítat">
+        </form>
+
+        {% if vysledek != None %}
+            <div class="vysledek">
+                <h2>Výsledek:</h2>
+                <p {% if vysledek == "Neplatný vstup. Zadejte prosím čísla." or vysledek == "Dělení nulou není povolené." %}class="error"{% endif %}>{{ vysledek }}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
