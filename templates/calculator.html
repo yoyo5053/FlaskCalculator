@@ -3,71 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <title>Calculator</title>
     <style>
         body {
-            font-family: sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
+    font-family: 'Roboto', sans-serif; /* Použití Google Font */
+    background-color: #e0eafc; /* Jemné modré pozadí */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
 
-        .calculator {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
+.calculator {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Jemnější stínování */
+    width: 300px;
+}
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
 
-        label {
-            display: block;
-            margin-bottom: 5px;
-            color: #555;
-        }
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #555;
+}
 
-        input[type="number"], select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
+input[type="number"], select {
+    width: calc(100% - 18px); /* upravena šířka pro padding */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+}
 
-        input[type="submit"] {
-            width: 100%;
-            background-color: #4CAF50;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            box-sizing: border-box;
-        }
+input[type="number"]:focus, select:focus {
+    border-color: #4a90e2; /* Zvýraznění aktivního pole */
+    outline: none;
+}
 
-        input[type="submit"]:hover {
-            background-color: #45a049;
-        }
+input[type="submit"] {
+    width: 100%;
+    background-color: #4a90e2; /* Moderní modrá */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+}
 
-        .result {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 18px;
-            color: #333;
-        }
+input[type="submit"]:hover {
+    background-color: #357abd;
+}
 
-        .error {
-            color: red;
-        }
+.result {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 20px;
+    color: #333;
+}
+
+.error {
+    color: #e74c3c;
+}
     </style>
 </head>
 <body>
