@@ -3,29 +3,29 @@ from flask import Flask, render_template, request
 app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
-def kalkulacka():
-    vysledek = None
+def calculator():
+    result = None
     if request.method == "POST":
         try:
-            cislo1 = float(request.form["cislo1"])
-            cislo2 = float(request.form["cislo2"])
-            operace = request.form["operace"]
+            num1 = float(request.form["num1"])
+            num2 = float(request.form["num2"])
+            operation = request.form["operation"]
 
-            if operace == "soucet":
-                vysledek = cislo1 + cislo2
-            elif operace == "rozdil":
-                vysledek = cislo1 - cislo2
-            elif operace == "soucin":
-                vysledek = cislo1 * cislo2
-            elif operace == "podil":
-                if cislo2 == 0:
-                    vysledek = "Dělení nulou není povolené."
+            if operation == "add":
+                result = num1 + num2
+            elif operation == "subtract":
+                result = num1 - num2
+            elif operation == "multiply":
+                result = num1 * num2
+            elif operation == "divide":
+                if num2 == 0:
+                    result = "Division by zero is not allowed."
                 else:
-                    vysledek = cislo1 / cislo2
+                    result = num1 / num2
         except ValueError:
-            vysledek = "Neplatný vstup. Zadejte prosím čísla."
+            result = "Invalid input. Please enter numbers."
 
-    return render_template("calculator.html", vysledek=vysledek)
+    return render_template("calculator.html", result=result)
 
 if __name__ == "__main__":
     app.run(debug=True)
