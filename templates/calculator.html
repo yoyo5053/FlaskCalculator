@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kalkulačka</title>
+    <title>Calculator</title>
     <style>
         body {
             font-family: sans-serif;
@@ -15,7 +15,7 @@
             margin: 0;
         }
 
-        .kalkulacka {
+        .calculator {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -34,7 +34,7 @@
             color: #555;
         }
 
-        input[type="text"], select {
+        input[type="number"], select {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
@@ -58,7 +58,7 @@
             background-color: #45a049;
         }
 
-        .vysledek {
+        .result {
             margin-top: 20px;
             text-align: center;
             font-size: 18px;
@@ -71,30 +71,30 @@
     </style>
 </head>
 <body>
-    <div class="kalkulacka">
-        <h1>Kalkulačka</h1>
+    <div class="calculator">
+        <h1>Calculator</h1>
         <form method="POST">
-            <label for="cislo1">Číslo 1:</label>
-            <input type="number" name="cislo1" id="cislo1" required><br><br>
+            <label for="num1">Number 1:</label>
+            <input type="number" name="num1" id="num1" required><br><br>
 
-            <label for="cislo2">Číslo 2:</label>
-            <input type="number" name="cislo2" id="cislo2" required><br><br>
+            <label for="num2">Number 2:</label>
+            <input type="number" name="num2" id="num2" required><br><br>
 
-            <label for="operace">Operace:</label>
-            <select name="operace" id="operace">
-                <option value="soucet">Součet</option>
-                <option value="rozdil">Rozdíl</option>
-                <option value="soucin">Součin</option>
-                <option value="podil">Podíl</option>
+            <label for="operation">Operation:</label>
+            <select name="operation" id="operation">
+                <option value="add">Add</option>
+                <option value="subtract">Subtract</option>
+                <option value="multiply">Multiply</option>
+                <option value="divide">Divide</option>
             </select><br><br>
 
-            <input type="submit" value="Spočítat">
+            <input type="submit" value="Calculate">
         </form>
 
-        {% if vysledek != None %}
-            <div class="vysledek">
-                <h2>Výsledek:</h2>
-                <p {% if vysledek == "Neplatný vstup. Zadejte prosím čísla." or vysledek == "Dělení nulou není povolené." %}class="error"{% endif %}>{{ vysledek }}</p>
+        {% if result != None %}
+            <div class="result">
+                <h2>Result:</h2>
+                <p {% if result == "Invalid input. Please enter numbers." or result == "Division by zero is not allowed." %}class="error"{% endif %}>{{ result }}</p>
             </div>
         {% endif %}
     </div>
