@@ -3,6 +3,8 @@
 - This repository contains a clean and user-friendly web calculator built with Flask, HTML, and CSS. 
 - It's designed to be simple to use while providing a modern and intuitive interface.
 
+  ![](https://github.com/hrosicka/FlaskCalculator/blob/master/doc/Calculator1.PNG)
+
 ## Features
 
 -   **Basic Arithmetic Operations:** Perform addition, subtraction, multiplication, and division.
