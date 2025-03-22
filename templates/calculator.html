@@ -9,8 +9,8 @@
     <title>Calculator</title>
     <style>
         body {
-    font-family: 'Roboto', sans-serif; /* Použití Google Font */
-    background-color: #e0eafc; /* Jemné modré pozadí */
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to bottom, #e0eafc, #dadbdb);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,15 +22,26 @@
     background-color: #fff;
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Jemnější stínování */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     width: 300px;
 }
 
 h1 {
     text-align: center;
-    margin-bottom: 30px;
-    color: #333;
+    margin-bottom: 35px;
+    color: #747678;
+    letter-spacing: 3px;
+    font-weight: 400;
+    text-transform: uppercase;
 }
+
+h2 {
+    text-align: center;
+    color: #555;
+    font-weight: 200;
+    font-size: 18px;
+}
+
 
 label {
     display: block;
@@ -39,7 +50,7 @@ label {
 }
 
 input[type="number"], select {
-    width: calc(100% - 18px); /* upravena šířka pro padding */
+    width: calc(100% - 18px);
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ddd;
@@ -49,13 +60,12 @@ input[type="number"], select {
 }
 
 input[type="number"]:focus, select:focus {
-    border-color: #4a90e2; /* Zvýraznění aktivního pole */
-    outline: none;
+    border-color: #4a90e2;
 }
 
 input[type="submit"] {
     width: 100%;
-    background-color: #4a90e2; /* Moderní modrá */
+    background-color: #4a90e2;
     color: white;
     padding: 12px 20px;
     border: none;
@@ -72,7 +82,7 @@ input[type="submit"]:hover {
 .result {
     margin-top: 30px;
     text-align: center;
-    font-size: 20px;
+    font-size: 18px;
     color: #333;
 }
 
@@ -83,13 +93,13 @@ input[type="submit"]:hover {
 </head>
 <body>
     <div class="calculator">
-        <h1>Calculator</h1>
+        <h1>CALCULATOR</h1>
         <form method="POST">
             <label for="num1">Number 1:</label>
-            <input type="number" name="num1" id="num1" required><br><br>
+            <input type="number" name="num1" id="num1" title="This field is required." style="text-align: right;" step="any"><br><br>
 
             <label for="num2">Number 2:</label>
-            <input type="number" name="num2" id="num2" required><br><br>
+            <input type="number" name="num2" id="num2" title="This field is required." style="text-align: right;" step="any"><br><br>
 
             <label for="operation">Operation:</label>
             <select name="operation" id="operation">
@@ -104,7 +114,7 @@ input[type="submit"]:hover {
 
         {% if result != None %}
             <div class="result">
-                <h2>Result:</h2>
+                <h2>Result</h2>
                 <p {% if result == "Invalid input. Please enter numbers." or result == "Division by zero is not allowed." %}class="error"{% endif %}>{{ result }}</p>
             </div>
         {% endif %}
