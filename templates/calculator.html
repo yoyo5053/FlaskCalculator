@@ -112,6 +112,9 @@ input[type="submit"]:hover {
             <input type="submit" value="Calculate">
         </form>
 
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
         {% if result != None %}
             <div class="result">
                 <h2>Result</h2>
