@@ -9,86 +9,85 @@
     <title>Calculator</title>
     <style>
         body {
-    font-family: 'Roboto', sans-serif;
-    background: linear-gradient(to bottom, #e0eafc, #dadbdb);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-}
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(to bottom, #e0eafc, #dadbdb);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
 
-.calculator {
-    background-color: #fff;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    width: 300px;
-}
+        .calculator {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
 
-h1 {
-    text-align: center;
-    margin-bottom: 35px;
-    color: #747678;
-    letter-spacing: 3px;
-    font-weight: 400;
-    text-transform: uppercase;
-}
+        h1 {
+            text-align: center;
+            margin-bottom: 35px;
+            color: #747678;
+            letter-spacing: 3px;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
 
-h2 {
-    text-align: center;
-    color: #555;
-    font-weight: 200;
-    font-size: 18px;
-}
+        h2 {
+            text-align: center;
+            color: #555;
+            font-weight: 200;
+            font-size: 18px;
+        }
 
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
 
-label {
-    display: block;
-    margin-bottom: 8px;
-    color: #555;
-}
+        input[type="number"], select {
+            width: calc(100% - 18px);
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
 
-input[type="number"], select {
-    width: calc(100% - 18px);
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    box-sizing: border-box;
-    transition: border-color 0.3s ease;
-}
+        input[type="number"]:focus, select:focus {
+            border-color: #4a90e2;
+        }
 
-input[type="number"]:focus, select:focus {
-    border-color: #4a90e2;
-}
+        input[type="submit"] {
+            width: 100%;
+            background-color: #4a90e2;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease;
+        }
 
-input[type="submit"] {
-    width: 100%;
-    background-color: #4a90e2;
-    color: white;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    box-sizing: border-box;
-    transition: background-color 0.3s ease;
-}
+        input[type="submit"]:hover {
+            background-color: #357abd;
+        }
 
-input[type="submit"]:hover {
-    background-color: #357abd;
-}
+        .result {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 18px;
+            color: #333;
+        }
 
-.result {
-    margin-top: 30px;
-    text-align: center;
-    font-size: 18px;
-    color: #333;
-}
-
-.error {
-    color: #e74c3c;
-}
+        .error {
+            color: #e74c3c;
+        }
     </style>
 </head>
 <body>
@@ -113,9 +112,9 @@ input[type="submit"]:hover {
         </form>
 
         {% if error %}
-        <p style="color: red;">{{ error }}</p>
+        <p class="error">{{ error }}</p>
         {% endif %}
-        {% if result != None %}
+        {% if result is not none %}
             <div class="result">
                 <h2>Result</h2>
                 <p {% if result == "Invalid input. Please enter numbers." or result == "Division by zero is not allowed." %}class="error"{% endif %}>{{ result }}</p>
