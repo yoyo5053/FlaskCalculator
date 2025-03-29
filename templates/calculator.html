@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <title>Calculator</title>
     <style>
         body {
@@ -24,15 +24,17 @@
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             width: 300px;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
         }
 
         h1 {
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 40px;
             color: #747678;
             letter-spacing: 3px;
             font-weight: 400;
             text-transform: uppercase;
+            font-size: 28px;
         }
 
         h2 {
@@ -40,6 +42,10 @@
             color: #555;
             font-weight: 200;
             font-size: 18px;
+        }
+
+        form {
+            margin-bottom: 30px; /* Větší mezera pod formulářem */
         }
 
         label {
