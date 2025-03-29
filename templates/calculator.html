@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <title>Calculator</title>
     <style>
         body {
@@ -23,39 +25,51 @@
             padding: 30px;
             border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            width: 100%;
+            max-width: 400px;
             transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            position: relative;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 40px;
+        .title {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            position: absolute;
+            left: -50px;
+            top: 50%;
+            transform-origin: center;
+            font-size: 28px;
             color: #747678;
             letter-spacing: 3px;
             font-weight: 400;
             text-transform: uppercase;
-            font-size: 28px;
         }
 
-        h2 {
+        .result-box {
+            padding-top: 15px;
+            padding-bottom: 0px;
+            border-radius: 8px;
+            background-color: #e0eafc;
             text-align: center;
-            color: #555;
-            font-weight: 200;
             font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        form {
-            margin-bottom: 30px; /* Větší mezera pod formulářem */
+        .hidden {
+            display: none;
         }
 
         label {
-            display: block;
             margin-bottom: 8px;
             color: #555;
         }
 
         input[type="number"], select {
-            width: calc(100% - 18px);
+            width: 100%;
             padding: 10px;
             margin-bottom: 15px;
             border: 1px solid #ddd;
@@ -84,13 +98,6 @@
             background-color: #357abd;
         }
 
-        .result {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 18px;
-            color: #333;
-        }
-
         .error {
             color: #e74c3c;
         }
@@ -98,34 +105,37 @@
 </head>
 <body>
     <div class="calculator">
-        <h1>CALCULATOR</h1>
+        <div class="title">Calculator</div>
+
+        <div class="result-box {% if result is none and not error %}hidden{% endif %}">
+            {% if error %}
+            <p class="error">{{ error }}</p>
+            {% elif result is not none %}
+            <p {% if result == "Invalid input. Please enter numbers." or result == "Division by zero is not allowed." %}class="error"{% endif %}>{{ result }}</p>
+            {% endif %}
+        </div>
+
         <form method="POST">
-            <label for="num1">Number 1:</label>
-            <input type="number" name="num1" id="num1" title="This field is required." style="text-align: right;" step="any"><br><br>
+            <label for="num1">Number 1</label>
+            <input type="number" name="num1" id="num1" title="This field is required." style="text-align: right;" step="any">
 
-            <label for="num2">Number 2:</label>
-            <input type="number" name="num2" id="num2" title="This field is required." style="text-align: right;" step="any"><br><br>
+            <label for="num2">Number 2</label>
+            <input type="number" name="num2" id="num2" title="This field is required." style="text-align: right;" step="any">
 
-            <label for="operation">Operation:</label>
+            <label for="operation">Operation</label>
             <select name="operation" id="operation">
                 <option value="add">Add</option>
                 <option value="subtract">Subtract</option>
                 <option value="multiply">Multiply</option>
                 <option value="divide">Divide</option>
-            </select><br><br>
+            </select>
 
             <input type="submit" value="Calculate">
         </form>
-
-        {% if error %}
-        <p class="error">{{ error }}</p>
-        {% endif %}
-        {% if result is not none %}
-            <div class="result">
-                <h2>Result</h2>
-                <p {% if result == "Invalid input. Please enter numbers." or result == "Division by zero is not allowed." %}class="error"{% endif %}>{{ result }}</p>
-            </div>
-        {% endif %}
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
