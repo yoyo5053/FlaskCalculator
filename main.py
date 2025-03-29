@@ -1,6 +1,13 @@
 from flask import Flask, render_template, request
+from decimal import Decimal, InvalidOperation
+from loguru import logger
+import sys
 
 app = Flask(__name__)
+
+# Configure Loguru
+logger.add("file_{time}.log", rotation="1 day", retention="7 days", level="INFO")
+logger.add(sys.stdout, level="INFO")
 
 class Calculator:
     """Class for performing arithmetic calculations."""
@@ -22,14 +29,20 @@ class Calculator:
         """Perform calculation based on the operation."""
         operation_func = self.OPERATIONS.get(self.operation)
         if operation_func:
-            return operation_func(self.num1, self.num2)
+            try:
+                result = operation_func(self.num1, self.num2)
+                logger.info(f"Calculation performed: {self.num1} {self.operation} {self.num2} = {result}")
+                return result
+            except Exception as e:
+                logger.error(f"Error during calculation: {e}")
+                return "An error occurred during calculation."
         return "Invalid operation."
     
 def validate_input(num1, num2):
     """Validate input numbers."""
     try:
-        return float(num1), float(num2)
-    except (TypeError, ValueError):
+        return Decimal(num1), Decimal(num2)
+    except (InvalidOperation, TypeError, ValueError):
         return None, None
 
 
