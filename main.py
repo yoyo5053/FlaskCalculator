@@ -117,6 +117,8 @@ class Calculation(Resource):
         else:
             calc = Calculator(validated_num1, validated_num2, operation)
             result = calc.calculate()
+            if result == "Division by zero is not allowed.":
+                return {'error': result}, 400
             return {'result': str(result)}
 
 @app.route("/", methods=["GET", "POST"])
