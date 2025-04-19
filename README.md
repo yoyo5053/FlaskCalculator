@@ -12,13 +12,21 @@
 -   **Input Validation:** Handles invalid input and division by zero errors gracefully.
 -   **Responsive Design:** Looks great on various screen sizes.
 -   **Google Fonts Integration:** Uses Roboto font for a polished look.
+-   **RESTful API:** Provides an API for performing calculations programmatically.
+-   **Swagger Documentation:** Automatically generated API documentation using Flask-RESTx, accessible through a web interface.
+-   **Unit Tests:** Includes comprehensive unit tests to ensure the reliability of the backend calculation logic and input validation.
+-   **Logging:** Implements logging using Loguru to track application activity and errors.
+
 
 ## Technologies Used
 
 -   **Flask:** A lightweight Python web framework.
 -   **HTML:** For structuring the web page.
 -   **CSS:** For styling and layout.
--   **Google Fonts:** For beautiful typography.
+-   **Google Fonts:** For beautiful typography (Roboto).
+-   **Decimal:** Python's `Decimal` type for precise arithmetic calculations.
+-   **Loguru:** A Python logging library for structured and informative logs.
+-   **unittest:** Python's built-in testing framework for writing and running unit tests.
 
 ## Getting Started
 
@@ -39,7 +47,7 @@
 3.  **Install dependencies:**
 
     ```bash
-    pip install Flask
+    pip install Flask Flask-RESTx Loguru
     ```
 
 4.  **Run the application:**
@@ -48,16 +56,29 @@
     python app.py
     ```
 
-5.  **Open your browser and navigate to `http://127.0.0.1:5000/`.**
+5.  **Open your browser:**
+    -   **Web Interface:** Navigate to `http://127.0.0.1:5000/` to use the web calculator.
+    -   **Swagger UI:** Navigate to `http://127.0.0.1:5000/api/` to access the automatically generated API documentation and try out the API endpoints.
 
 ## Usage
 
-Simply enter two numbers, select the desired operation, and click "Calculate" to get the result. The application will handle any input errors and display the result or an error message.
+### Web Interface
 
+Simply enter two numbers in the respective fields, select the desired operation from the dropdown, and click the "Calculate" button to get the result. The application will handle any invalid input (non-numeric values) and division by zero errors, displaying an appropriate message.
 
-## Show Your Support
+### REST API
 
-If you find this project useful, please consider giving it a star! It helps others discover and use this simple calculator.
+The calculator exposes a RESTful API under the `/api` prefix. You can interact with the calculator programmatically by sending a `POST` request to the `/api/calculate/` endpoint with a JSON payload containing the following fields:
+
+-   `num1`: The first number (as a string).
+-   `num2`: The second number (as a string).
+-   `operation`: The operation to perform (a string: "add", "subtract", "multiply", or "divide").
+
+**Example using `curl`:**
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{"num1": "10", "num2": "5", "operation": "add"}' [http://127.0.0.1:5000/api/calculate/](http://127.0.0.1:5000/api/calculate/)
+```
 
 ## License
 
