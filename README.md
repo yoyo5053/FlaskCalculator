@@ -80,6 +80,12 @@ The calculator exposes a RESTful API under the `/api` prefix. You can interact w
 curl -X POST -H "Content-Type: application/json" -d '{"num1": "10", "num2": "5", "operation": "add"}' [http://127.0.0.1:5000/api/calculate/](http://127.0.0.1:5000/api/calculate/)
 ```
 
+The API will return a JSON response with the result of the calculation as a string. It also handles invalid input and division by zero, returning appropriate error messages with an HTTP status code of 400.
+
+## Unit Tests
+
+Unit tests are included to verify the functionality of the Calculator class and the validate_input function.
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
