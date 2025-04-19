@@ -1,8 +1,9 @@
 from flask import Flask, render_template, request
-from flask_restx import Api, Resource, fields
+from flask_restx import Api, Resource, fields, abort
 from decimal import Decimal, InvalidOperation
 from loguru import logger
 import sys
+from typing import Optional
 
 # Initialize Flask application
 app = Flask(__name__)
@@ -20,18 +21,32 @@ api = Api(app,
 logger.add("file_{time}.log", rotation="1 day", retention="7 days", level="INFO")
 logger.add(sys.stdout, level="INFO")
 
+# Define operation constants
+ADD = "add"
+SUBTRACT = "subtract"
+MULTIPLY = "multiply"
+DIVIDE = "divide"
+
+class DivisionByZeroError(Exception):
+    """Custom exception for division by zero."""
+    pass
+
+class InvalidOperationError(Exception):
+    """Custom exception for invalid operation."""
+    pass
+
 class Calculator:
     """
     A class for performing basic arithmetic calculations.
     """
     OPERATIONS = {
-        "add": lambda x, y: x + y,
-        "subtract": lambda x, y: x - y,
-        "multiply": lambda x, y: x * y,
-        "divide": lambda x, y: x / y if y != 0 else "Division by zero is not allowed.",
+        ADD: lambda x, y: x + y,
+        SUBTRACT: lambda x, y: x - y,
+        MULTIPLY: lambda x, y: x * y,
+        DIVIDE: lambda x, y: x / y if y != 0 else DivisionByZeroError("Division by zero is not allowed."),
     }
 
-    def __init__(self, num1, num2, operation):
+    def __init__(self, num1: Decimal, num2: Decimal, operation: str):
         """
         Initializes the Calculator instance with two numbers and an operation.
 
@@ -39,45 +54,42 @@ class Calculator:
             num1 (Decimal): The first number for the calculation.
             num2 (Decimal): The second number for the calculation.
             operation (str): The operation to perform (add, subtract, multiply, divide).
+        Raises:
+            InvalidOperationError: If the provided operation is invalid.
         """
+        if operation not in self.OPERATIONS:
+            raise InvalidOperationError(f"Invalid operation: {operation}")
         self.num1 = num1
         self.num2 = num2
         self.operation = operation
 
-    def calculate(self):
+    def calculate(self) -> Decimal:
         """
         Performs the calculation based on the provided operation.
 
         Returns:
-            Union[Decimal, str]: The result of the calculation or an error message.
+            Decimal: The result of the calculation.
+        Raises:
+            DivisionByZeroError: If division by zero is attempted.
         """
-        operation_func = self.OPERATIONS.get(self.operation)
-        if operation_func:
-            try:
-                result = operation_func(self.num1, self.num2)
-                logger.info(f"Calculation performed: {self.num1} {self.operation} {self.num2} = {result}")
-                return result
-            except Exception as e:
-                logger.error(f"Error during calculation: {e}")
-                return "An error occurred during calculation."
-        return "Invalid operation."
+        operation_func = self.OPERATIONS[self.operation]
+        logger.info(f"Calculation performed: {self.num1} {self.operation} {self.num2}")
+        return operation_func(self.num1, self.num2)
 
-def validate_input(num1, num2):
+def validate_input(num_str: str) -> Optional[Decimal]:
     """
-    Validates if the input strings can be converted to Decimal numbers.
+    Validates if the input string can be converted to a Decimal number.
 
     Args:
-        num1 (str): The first input number as a string.
-        num2 (str): The second input number as a string.
+        num_str (str): The input number as a string.
 
     Returns:
-        Tuple[Optional[Decimal], Optional[Decimal]]: A tuple containing the validated Decimal numbers,
-                                                    or None for either if validation fails.
+        Optional[Decimal]: The validated Decimal number, or None if validation fails.
     """
     try:
-        return Decimal(num1), Decimal(num2)
+        return Decimal(num_str)
     except (InvalidOperation, TypeError, ValueError):
-        return None, None
+        return None
 
 # Define the namespace for the calculator API
 ns = api.namespace('calculate', description='Basic arithmetic operations')
@@ -86,7 +98,7 @@ ns = api.namespace('calculate', description='Basic arithmetic operations')
 calculator_model = api.model('CalculatorInput', {
     'num1': fields.String(required=True, description='First number'),
     'num2': fields.String(required=True, description='Second number'),
-    'operation': fields.String(required=True, description='Operation (add, subtract, multiply, divide)')
+    'operation': fields.String(required=True, description=f'Operation ({ADD}, {SUBTRACT}, {MULTIPLY}, {DIVIDE})')
 })
 
 # Define the data transfer object (DTO) for the calculation result
@@ -110,16 +122,20 @@ class Calculation(Resource):
         num2_str = data.get('num2')
         operation = data.get('operation')
 
-        validated_num1, validated_num2 = validate_input(num1_str, num2_str)
+        validated_num1 = validate_input(num1_str)
+        validated_num2 = validate_input(num2_str)
 
         if validated_num1 is None or validated_num2 is None:
-            return {'result': "Invalid input. Please enter valid numbers."}, 400
-        else:
+            abort(400, "Invalid input. Please enter valid numbers.")
+
+        try:
             calc = Calculator(validated_num1, validated_num2, operation)
             result = calc.calculate()
-            if result == "Division by zero is not allowed.":
-                return {'error': result}, 400
             return {'result': str(result)}
+        except DivisionByZeroError as e:
+            abort(400, str(e))
+        except InvalidOperationError as e:
+            abort(400, str(e))
 
 @app.route("/", methods=["GET", "POST"])
 def calculator_ui():
@@ -135,13 +151,19 @@ def calculator_ui():
         num2 = request.form.get("num2")
         operation = request.form.get("operation")
 
-        validated_num1, validated_num2 = validate_input(num1, num2)
+        validated_num1 = validate_input(num1)
+        validated_num2 = validate_input(num2)
 
         if validated_num1 is None or validated_num2 is None:
             error = "Invalid input. Please enter valid numbers."
         else:
-            calc = Calculator(validated_num1, validated_num2, operation)
-            result = calc.calculate()
+            try:
+                calc = Calculator(validated_num1, validated_num2, operation)
+                result = calc.calculate()
+            except DivisionByZeroError as e:
+                error = str(e)
+            except InvalidOperationError as e:
+                error = str(e)
 
     return render_template("calculator.html", result=result, error=error)
 
