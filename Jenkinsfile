@@ -11,11 +11,13 @@ pipeline {
     stage('Install dependencies') {
       steps {
         bat """
-          REM Crée et active le venv
-          python -m venv venv
+          REM Crée un virtualenv avec le launcher py
+          py -3 -m venv venv
+          
+          REM Active le venv
           call venv\\Scripts\\activate.bat
-
-          REM Installe les dépendances
+          
+          REM Installe les dépendances du projet
           pip install -r requirements.txt
         """
       }
@@ -27,11 +29,11 @@ pipeline {
           REM Active le venv
           call venv\\Scripts\\activate.bat
 
-          REM Prépare le dossier results
+          REM Reconstruit le dossier results
           if exist results rmdir /s /q results
           mkdir results
 
-          REM Lance pytest et génère JUnit + Cobertura + HTMLcov
+          REM Lance pytest et génère les rapports
           pytest --junitxml=results\\report.xml ^
                  --cov=calculator --cov-report=xml:results\\coverage.xml ^
                  --cov-report=html:results\\htmlcov
@@ -42,11 +44,11 @@ pipeline {
 
   post {
     always {
-      // Archive les résultats JUnit
+      // Publie les résultats JUnit
       junit 'results\\report.xml'
-      // Archive la couverture Cobertura
+      // Publie la couverture Cobertura
       cobertura coberturaReportFile: 'results\\coverage.xml'
-      // Archive le rapport HTML pour le visualiser
+      // Archive le rapport HTML 
       archiveArtifacts artifacts: 'results/htmlcov/**', fingerprint: true
     }
   }
