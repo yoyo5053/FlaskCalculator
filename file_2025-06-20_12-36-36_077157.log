@@ -1,0 +1,11 @@
+2025-06-20 12:36:36.244 | INFO     | main:calculate:76 - Calculation performed: 10 add 5
+2025-06-20 12:36:36.257 | INFO     | main:calculate:76 - Calculation performed: 5 divide 0
+2025-06-20 12:36:36.469 | INFO     | main:calculate:76 - Calculation performed: 1 add 1
+2025-06-20 12:36:36.473 | INFO     | main:calculate:76 - Calculation performed: 5 subtract 3
+2025-06-20 12:36:36.479 | INFO     | main:calculate:76 - Calculation performed: 4 multiply 3
+2025-06-20 12:36:36.486 | INFO     | main:calculate:76 - Calculation performed: 6 divide 2
+2025-06-20 12:36:36.489 | INFO     | main:calculate:76 - Calculation performed: 1000000000000000000 add 1000000000000000000
+2025-06-20 12:36:36.494 | INFO     | main:calculate:76 - Calculation performed: 2.5 multiply 4.2
+2025-06-20 12:36:36.497 | INFO     | main:calculate:76 - Calculation performed: 0 multiply 12345
+2025-06-20 12:36:36.497 | INFO     | main:calculate:76 - Calculation performed: 0 add 0
+2025-06-20 12:36:36.503 | INFO     | main:calculate:76 - Calculation performed: 5 divide 0

@@ -1,0 +1,4 @@
+2025-06-20 11:33:28.413 | INFO     | __main__:calculate:76 - Calculation performed: 3 multiply 4
+2025-06-20 11:33:33.679 | INFO     | __main__:calculate:76 - Calculation performed: 0 add 4
+2025-06-20 11:33:38.985 | INFO     | __main__:calculate:76 - Calculation performed: 0 add 4
+2025-06-20 11:33:44.031 | INFO     | __main__:calculate:76 - Calculation performed: 0 multiply 4
