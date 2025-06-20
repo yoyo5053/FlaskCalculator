@@ -4,41 +4,49 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        // Clone le dépôt configuré dans le job
         checkout scm
       }
     }
 
     stage('Install dependencies') {
       steps {
-        // Crée et active un virtualenv, puis installe les dépendances
-        sh '''
+        bat """
+          REM Crée et active le venv
           python -m venv venv
-          source venv/bin/activate
+          call venv\\Scripts\\activate.bat
+
+          REM Installe les dépendances
           pip install -r requirements.txt
-        '''
+        """
       }
     }
 
     stage('Run tests') {
       steps {
-        // Lance pytest en générant JUnit, Cobertura et HTMLcov
-        sh '''
-          source venv/bin/activate
-          pytest --junitxml=results/report.xml \
-                 --cov=calculator --cov-report=xml:results/coverage.xml \
-                 --cov-report=html:results/htmlcov
-        '''
+        bat """
+          REM Active le venv
+          call venv\\Scripts\\activate.bat
+
+          REM Prépare le dossier results
+          if exist results rmdir /s /q results
+          mkdir results
+
+          REM Lance pytest et génère JUnit + Cobertura + HTMLcov
+          pytest --junitxml=results\\report.xml ^
+                 --cov=calculator --cov-report=xml:results\\coverage.xml ^
+                 --cov-report=html:results\\htmlcov
+        """
       }
     }
   }
 
   post {
     always {
-      // Publie les résultats JUnit et la couverture Cobertura
-      junit 'results/report.xml'
-      cobertura coberturaReportFile: 'results/coverage.xml'
-      // Archive le rapport HTML pour pouvoir le télécharger/viewer dans Jenkins
+      // Archive les résultats JUnit
+      junit 'results\\report.xml'
+      // Archive la couverture Cobertura
+      cobertura coberturaReportFile: 'results\\coverage.xml'
+      // Archive le rapport HTML pour le visualiser
       archiveArtifacts artifacts: 'results/htmlcov/**', fingerprint: true
     }
   }
