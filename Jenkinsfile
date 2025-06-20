@@ -4,7 +4,6 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        // clone & checkout de la branche paramétrée dans le job
         checkout scm
       }
     }
@@ -12,9 +11,8 @@ pipeline {
     stage('Install dependencies') {
       steps {
         bat """
-          REM Installe Flask, RESTx, Loguru + pytest et extensions
-          py -3 -m pip install Flask Flask-RESTx Loguru
-          py -3 -m pip install pytest pytest-cov pytest-flask
+          REM Installe toutes les dépendances avec le python absolu
+          "C:\\Users\\km\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pip install Flask Flask-RESTx Loguru pytest pytest-cov pytest-flask
         """
       }
     }
@@ -22,14 +20,14 @@ pipeline {
     stage('Run tests') {
       steps {
         bat """
-          REM Crée le répertoire results
+          REM Prépare le dossier results
           if exist results rmdir /s /q results
           mkdir results
 
-          REM Lance pytest sur le dossier Tests/ (où sont tes tests)
-          py -3 -m pytest Tests --junitxml=results\\report.xml ^
-                                  --cov=main --cov-report=xml:results\\coverage.xml ^
-                                  --cov-report=html:results\\htmlcov
+          REM Exécute pytest via l'exécutable Python absolu
+          "C:\\Users\\km\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" -m pytest Tests --junitxml=results\\report.xml ^
+                                                                                   --cov=main --cov-report=xml:results\\coverage.xml ^
+                                                                                   --cov-report=html:results\\htmlcov
         """
       }
     }
@@ -37,7 +35,6 @@ pipeline {
 
   post {
     always {
-      // Archives JUnit / Cobertura / HTMLcov
       junit 'results\\report.xml'
       cobertura coberturaReportFile: 'results\\coverage.xml'
       archiveArtifacts artifacts: 'results/htmlcov/**', fingerprint: true
