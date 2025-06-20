@@ -1,6 +1,6 @@
 import pytest
 from decimal import Decimal
-from main import app, Calculator, validate_input, InvalidOperationError
+from main import app, Calculator, DivisionByZeroError, validate_input, InvalidOperationError
 
 @pytest.mark.parametrize("num1, num2, operation, expected", [
     (Decimal("1"), Decimal("1"), "add", Decimal("2")),
@@ -27,7 +27,7 @@ def test_zero_operand():
 
 def test_division_par_zero():
     calc = Calculator(Decimal("5"), Decimal("0"), "divide")
-    
+
     result = calc.calculate()
     # La méthode renvoie une instance de l'erreur, pas une chaîne
     assert isinstance(result, DivisionByZeroError)
