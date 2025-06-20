@@ -1,6 +1,6 @@
 import pytest
 from decimal import Decimal
-from main import app, Calculator, validate_input, DivisionByZeroError, InvalidOperationError
+from main import app, Calculator, validate_input, InvalidOperationError
 
 @pytest.mark.parametrize("num1, num2, operation, expected", [
     (Decimal("1"), Decimal("1"), "add", Decimal("2")),
