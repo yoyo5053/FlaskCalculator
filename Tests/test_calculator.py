@@ -27,10 +27,10 @@ def test_zero_operand():
 
 def test_division_par_zero():
     calc = Calculator(Decimal("5"), Decimal("0"), "divide")
-    with pytest.raises(DivisionByZeroError) as excinfo:
-        calc.calculate()
-    # Vérifie que le message d'erreur correspond
-    assert "Division by zero is not allowed." in str(excinfo.value)
+    # La méthode renvoie le message d'erreur en chaîne de caractères
+    result = calc.calculate()
+    assert isinstance(result, str)
+    assert result == "Division by zero is not allowed."
 
 def test_invalid_operation():
     with pytest.raises(InvalidOperationError):
