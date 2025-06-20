@@ -4,6 +4,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
+        // clone & checkout de la branche paramétrée dans le job
         checkout scm
       }
     }
@@ -11,14 +12,9 @@ pipeline {
     stage('Install dependencies') {
       steps {
         bat """
-          REM Crée un virtualenv avec le launcher py
-          py -3 -m venv venv
-          
-          REM Active le venv
-          call venv\\Scripts\\activate.bat
-          
-          REM Installe les dépendances du projet
-          pip install -r requirements.txt
+          REM Installe Flask, RESTx, Loguru + pytest et extensions
+          py -3 -m pip install Flask Flask-RESTx Loguru
+          py -3 -m pip install pytest pytest-cov pytest-flask
         """
       }
     }
@@ -26,17 +22,14 @@ pipeline {
     stage('Run tests') {
       steps {
         bat """
-          REM Active le venv
-          call venv\\Scripts\\activate.bat
-
-          REM Reconstruit le dossier results
+          REM Crée le répertoire results
           if exist results rmdir /s /q results
           mkdir results
 
-          REM Lance pytest et génère les rapports
-          pytest --junitxml=results\\report.xml ^
-                 --cov=calculator --cov-report=xml:results\\coverage.xml ^
-                 --cov-report=html:results\\htmlcov
+          REM Lance pytest sur le dossier Tests/ (où sont tes tests)
+          py -3 -m pytest Tests --junitxml=results\\report.xml ^
+                                  --cov=main --cov-report=xml:results\\coverage.xml ^
+                                  --cov-report=html:results\\htmlcov
         """
       }
     }
@@ -44,11 +37,9 @@ pipeline {
 
   post {
     always {
-      // Publie les résultats JUnit
+      // Archives JUnit / Cobertura / HTMLcov
       junit 'results\\report.xml'
-      // Publie la couverture Cobertura
       cobertura coberturaReportFile: 'results\\coverage.xml'
-      // Archive le rapport HTML 
       archiveArtifacts artifacts: 'results/htmlcov/**', fingerprint: true
     }
   }
