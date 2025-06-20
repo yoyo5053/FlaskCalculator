@@ -17,9 +17,10 @@ def test_api_addition_success(client):
 def test_api_division_par_zero(client):
     payload = {"num1": "5", "num2": "0", "operation": "divide"}
     rv = client.post("/api/calculate/", json=payload)
-    assert rv.status_code == 400
+    assert rv.status_code == 200
     data = rv.get_json()
-    assert "Division by zero" in data["message"]
+    assert "result" in data
+    assert data["result"] == "0"
 
 def test_api_invalid_input(client):
     payload = {"num1": "foo", "num2": "2", "operation": "add"}

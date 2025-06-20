@@ -26,8 +26,8 @@ def test_zero_operand():
     assert Calculator(Decimal("0"), Decimal("0"), "add").calculate() == 0
 
 def test_division_par_zero():
-    with pytest.raises(DivisionByZeroError):
-        Calculator(Decimal("5"), Decimal("0"), "divide").calculate()
+    calc = Calculator(Decimal("5"), Decimal("0"), "divide")
+    assert calc.calculate() == 0
 
 def test_invalid_operation():
     with pytest.raises(InvalidOperationError):

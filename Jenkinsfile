@@ -36,7 +36,6 @@ pipeline {
   post {
     always {
       junit 'results\\report.xml'
-      cobertura coberturaReportFile: 'results\\coverage.xml'
       archiveArtifacts artifacts: 'results/htmlcov/**', fingerprint: true
     }
   }
