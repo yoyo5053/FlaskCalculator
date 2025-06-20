@@ -17,10 +17,14 @@ def test_api_addition_success(client):
 def test_api_division_par_zero(client):
     payload = {"num1": "5", "num2": "0", "operation": "divide"}
     rv = client.post("/api/calculate/", json=payload)
+
+    # L'API renvoie toujours 200
     assert rv.status_code == 200
+
     data = rv.get_json()
+    # Le résultat contient le message d'erreur
     assert "result" in data
-    assert data["result"] == "0"
+    assert data["result"] == "Division by zero is not allowed."
 
 def test_api_invalid_input(client):
     payload = {"num1": "foo", "num2": "2", "operation": "add"}
